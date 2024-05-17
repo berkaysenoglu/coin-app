@@ -4,7 +4,27 @@
     justify-content: center;
     height: 100vh;
 }
-.form-wrapper{
- border-radius: 10px;
- background-color: light;
-}
+.login-wrapper{
+    
+    display: flex;
+    
+    .info-wrapper{
+        margin-left: 200px;
+        font-family: sans-serif;
+        font-size:larger;
+      
+    }
+
+    .form-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ border-radius: 20px;
+ background-color: rgba(189, 193, 195, 0.681);
+ height: 50vh;
+ width: 40vh;
+ .submit-button{
+    margin-left: 115px;
+    width: 80px;
+ }
+}}
