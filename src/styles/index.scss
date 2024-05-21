@@ -4,15 +4,35 @@
     justify-content: center;
     height: 100vh;
 }
-.login-wrapper{
+.page-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+   background-color: white;
+    
+    .login-wrapper{
     
     display: flex;
-    
+    align-items: center;
+    justify-content: center;
+    margin-top:100px;
+    margin-bottom: 150px;
     .info-wrapper{
         margin-left: 200px;
         font-family: sans-serif;
-        font-size:larger;
-      
+        font-size:larger;  
+        min-width: 30%;
+       max-width: 30%;
+       max-height: 500p;
+       margin-bottom: 10%;
+
+      h1{
+        margin-top: 0;
+        color: rgb(37, 62, 145);
+      }
+ 
     }
 
     .form-wrapper{
@@ -23,8 +43,25 @@
  background-color: rgba(189, 193, 195, 0.681);
  height: 50vh;
  width: 40vh;
+ min-width: 45vh;
+ margin-left: 200px;
  .submit-button{
     margin-left: 115px;
     width: 80px;
  }
-}}
+ .sign-in-label{
+    cursor: pointer;
+    font-family: sans-serif;
+    margin-left: 130px;
+    
+ }
+ .sign-in-label:hover{
+    text-decoration: underline;
+    color:blue
+ }
+}}}
+.login-logo{
+    aspect-ratio: 500/100;
+  width: 500px;
+  height: 100px;
+}
