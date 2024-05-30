@@ -2,7 +2,7 @@ import React from "react";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import { useState, useEffect } from "react";
-
+import CoinTable from "../components/Table.jsx";
 const Home = () => {
   const { user } = useAuth();
   const [coins, setCoins] = useState([]);
@@ -23,13 +23,7 @@ const Home = () => {
     fetchData();
   }, []);
   console.log(coins);
-  return (
-    <div>
-      {coins.map((coin) => (
-        <a>{coin.name}</a>
-      ))}
-    </div>
-  );
+  return <CoinTable coins={coins} />;
 };
 
 export default Home;
