@@ -23,7 +23,7 @@ const Home = () => {
     fetchData();
   }, []);
   console.log(coins);
-  return <CoinTable coins={coins} />;
+  return <CoinTable coins={coins} setCoins={setCoins} />;
 };
 
 export default Home;
