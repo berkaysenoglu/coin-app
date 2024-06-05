@@ -58,7 +58,6 @@ const CoinTable = ({ coins, setCoins }) => {
       await axios.delete(`http://localhost:5000/coins/${id}`);
       message.success("Coin deleted successfully");
       setCoins(coins.filter((coin) => coin._id !== id));
-      // Refresh the table or do something else to show updated data
     } catch (error) {
       console.error("Error deleting coin:", error);
       message.error("Failed to delete coin");
