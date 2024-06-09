@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { MdEdit, MdDeleteForever } from "react-icons/md";
-
 import {
   Space,
   Table,
@@ -12,11 +10,14 @@ import {
   message,
 } from "antd";
 import axios from "axios";
+import { MdEdit, MdDeleteForever } from "react-icons/md";
 
-const CoinTable = ({ coins, setCoins }) => {
+const CoinTable = ({ coins, setCoins, loading, pagination, onTableChange }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [editingCoin, setEditingCoin] = useState(null);
   const [form] = Form.useForm();
+  const [addForm] = Form.useForm();
 
   const showEditModal = (record) => {
     setEditingCoin(record);
@@ -24,9 +25,14 @@ const CoinTable = ({ coins, setCoins }) => {
     form.setFieldsValue(record);
   };
 
+  const showAddModal = () => {
+    setIsAddModalVisible(true);
+  };
+
   const handleCancel = () => {
     setIsModalVisible(false);
     setEditingCoin(null);
+    setIsAddModalVisible(false);
   };
 
   const handleSave = async () => {
@@ -39,13 +45,13 @@ const CoinTable = ({ coins, setCoins }) => {
       const updatedCoin = response.data;
       message.success("Coin updated successfully");
       setIsModalVisible(false);
-
       setEditingCoin(null);
-
       setCoins((prevCoins) =>
-        prevCoins.map((coin) =>
-          coin._id === updatedCoin._id ? updatedCoin : coin
-        )
+        Array.isArray(prevCoins)
+          ? prevCoins.map((coin) =>
+              coin._id === updatedCoin._id ? updatedCoin : coin
+            )
+          : []
       );
     } catch (error) {
       console.error("Error updating coin:", error);
@@ -57,10 +63,30 @@ const CoinTable = ({ coins, setCoins }) => {
     try {
       await axios.delete(`http://localhost:5000/coins/${id}`);
       message.success("Coin deleted successfully");
-      setCoins(coins.filter((coin) => coin._id !== id));
+      setCoins((prevCoins) =>
+        Array.isArray(prevCoins)
+          ? prevCoins.filter((coin) => coin._id !== id)
+          : []
+      );
     } catch (error) {
       console.error("Error deleting coin:", error);
       message.error("Failed to delete coin");
+    }
+  };
+
+  const handleAdd = async () => {
+    try {
+      const values = await addForm.validateFields();
+      const response = await axios.post(`http://localhost:5000/coins`, values);
+      const newCoin = response.data;
+      message.success("Coin added successfully");
+      setIsAddModalVisible(false);
+      setCoins((prevCoins) =>
+        Array.isArray(prevCoins) ? [...prevCoins, newCoin] : [newCoin]
+      );
+    } catch (error) {
+      console.error("Error adding coin:", error);
+      message.error("Failed to add coin");
     }
   };
 
@@ -98,10 +124,10 @@ const CoinTable = ({ coins, setCoins }) => {
       render: (_, record) => (
         <Space size="middle">
           <a onClick={() => showEditModal(record)}>
-            {<MdEdit size={"20px"} color="black" />}
+            <MdEdit size={"20px"} color="black" />
           </a>
           <a onClick={() => handleDelete(record._id)}>
-            {<MdDeleteForever size={"20px"} color="black" />}
+            <MdDeleteForever size={"20px"} color="black" />
           </a>
         </Space>
       ),
@@ -109,55 +135,114 @@ const CoinTable = ({ coins, setCoins }) => {
   ];
 
   return (
-    <div className="table-container">
-      <Table
-        showSorterTooltip={{
-          target: "sorter-icon",
-        }}
-        columns={columns}
-        dataSource={coins}
-      />
+    <div>
+      <div style={{ backgroundColor: "red" }}>HEADER</div>
+      <div className="table-container">
+        <Button
+          type="primary"
+          onClick={showAddModal}
+          style={{ marginBottom: 8, width: "120px" }}
+        >
+          Add New Coin
+        </Button>
+        <Table
+          pagination={{
+            current: pagination.current,
+            pageSize: pagination.pageSize,
+            total: pagination.total,
+          }}
+          loading={loading}
+          columns={columns}
+          dataSource={coins}
+          onChange={onTableChange}
+        />
 
-      <Modal
-        title="Edit Coin"
-        visible={isModalVisible}
-        onCancel={handleCancel}
-        onOk={handleSave}
-      >
-        <Form form={form} layout="vertical">
-          <Form.Item
-            name="name"
-            label="Name"
-            rules={[{ required: true, message: "Please input the name!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="image"
-            label="Image URL"
-            rules={[{ required: true, message: "Please input the image URL!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="tag"
-            label="Tag"
-            rules={[{ required: true, message: "Please input the tag!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="price"
-            label="Price"
-            rules={[
-              { required: true, message: "Please input the price!" },
-              { type: "number", message: "Price must be a number" },
-            ]}
-          >
-            <InputNumber style={{ width: "100%" }} />
-          </Form.Item>
-        </Form>
-      </Modal>
+        <Modal
+          title="Edit Coin"
+          open={isModalVisible}
+          onCancel={handleCancel}
+          onOk={handleSave}
+        >
+          <Form form={form} layout="vertical">
+            <Form.Item
+              name="name"
+              label="Name"
+              rules={[{ required: true, message: "Please input the name!" }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="image"
+              label="Image URL"
+              rules={[
+                { required: true, message: "Please input the image URL!" },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="tag"
+              label="Tag"
+              rules={[{ required: true, message: "Please input the tag!" }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="price"
+              label="Price"
+              rules={[
+                { required: true, message: "Please input the price!" },
+                { type: "number", message: "Price must be a number" },
+              ]}
+            >
+              <InputNumber style={{ width: "100%" }} />
+            </Form.Item>
+          </Form>
+        </Modal>
+
+        <Modal
+          title="Add New Coin"
+          open={isAddModalVisible}
+          onCancel={handleCancel}
+          onOk={handleAdd}
+        >
+          <Form form={addForm} layout="vertical">
+            <Form.Item
+              name="name"
+              label="Name"
+              rules={[{ required: true, message: "Please input the name!" }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="image"
+              label="Image URL"
+              rules={[
+                { required: true, message: "Please input the image URL!" },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="tag"
+              label="Tag"
+              rules={[{ required: true, message: "Please input the tag!" }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="price"
+              label="Price"
+              rules={[
+                { required: true, message: "Please input the price!" },
+                { type: "number", message: "Price must be a number" },
+              ]}
+            >
+              <InputNumber style={{ width: "100%" }} />
+            </Form.Item>
+          </Form>
+        </Modal>
+      </div>
     </div>
   );
 };
