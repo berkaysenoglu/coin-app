@@ -4,6 +4,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+
   useEffect(() => {
     const storedUser = sessionStorage.getItem("user");
     if (storedUser) {
@@ -22,6 +23,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     sessionStorage.removeItem("user");
   };
+
   return (
     <AuthContext.Provider value={{ user, login, logout, register }}>
       {children}

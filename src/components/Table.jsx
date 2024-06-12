@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Space,
   Table,
@@ -11,13 +11,21 @@ import {
 } from "antd";
 import axios from "axios";
 import { MdEdit, MdDeleteForever } from "react-icons/md";
+import useDebounce from "../hooks/useDebounce"; // Debounce hook'unu içe aktarın
 
 const CoinTable = ({ coins, setCoins, loading, pagination, onTableChange }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [editingCoin, setEditingCoin] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [form] = Form.useForm();
   const [addForm] = Form.useForm();
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500ms debounce delay
+
+  useEffect(() => {
+    onTableChange(pagination, debouncedSearchTerm);
+  }, [debouncedSearchTerm]);
 
   const showEditModal = (record) => {
     setEditingCoin(record);
@@ -90,6 +98,10 @@ const CoinTable = ({ coins, setCoins, loading, pagination, onTableChange }) => {
     }
   };
 
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
   const columns = [
     {
       title: "Name",
@@ -138,6 +150,12 @@ const CoinTable = ({ coins, setCoins, loading, pagination, onTableChange }) => {
     <div>
       <div style={{ backgroundColor: "red" }}>HEADER</div>
       <div className="table-container">
+        <Input.Search
+          placeholder="Search by name or tag"
+          value={searchTerm}
+          onChange={handleSearch}
+          style={{ marginBottom: 8 }}
+        />
         <Button
           type="primary"
           onClick={showAddModal}
@@ -154,7 +172,9 @@ const CoinTable = ({ coins, setCoins, loading, pagination, onTableChange }) => {
           loading={loading}
           columns={columns}
           dataSource={coins}
-          onChange={onTableChange}
+          onChange={(pagination) =>
+            onTableChange(pagination, debouncedSearchTerm)
+          }
         />
 
         <Modal
