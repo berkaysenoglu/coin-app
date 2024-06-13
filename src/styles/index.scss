@@ -10,15 +10,19 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-   background-color: white;
-    
+   background-image: url("public/login-background.jpg") ;
+   background-size: cover;
+   width: 201.5vh;
+   
     .login-wrapper{
     
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top:100px;
-    margin-bottom: 150px;
+ 
+   
+    height: 100vh;
+    
     .info-wrapper{
         margin-left: 200px;
         font-family: sans-serif;
@@ -27,6 +31,7 @@
        max-width: 30%;
        max-height: 500p;
        margin-bottom: 10%;
+       
 
       h1{
         margin-top: 0;
@@ -37,22 +42,43 @@
 
     .form-wrapper{
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
  border-radius: 20px;
- background-color: rgba(189, 193, 195, 0.681);
+
  height: 50vh;
  width: 40vh;
- min-width: 45vh;
- margin-left: 200px;
+ min-width: 300px;
+ max-width: 45vh;
+ 
+ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+ background-color: rgba(255, 255, 255, 0.7);
+
+    
+.input-password{
+   width: 265px;
+   background-color: transparent;
+   
+}
+.ant-input::placeholder {
+   color: gray !important; /* İstediğiniz rengi buraya yazın */
+   opacity: 1 !important; /* Opaklık ayarını 1 olarak ayarlayın, böylece tam renk görünür */
+ }
+
+.input-email{
+   width: 265px;
+   background-color: transparent;
+}
  .submit-button{
-    margin-left: 115px;
-    width: 80px;
+    
+    width: 250px;
  }
  .sign-in-label{
     cursor: pointer;
     font-family: sans-serif;
-    margin-left: 130px;
+    margin-left: 60px;
+    
     
  }
  .sign-in-label:hover{

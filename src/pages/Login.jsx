@@ -35,6 +35,9 @@ export const Login = () => {
     <div className="page-container">
       <div className="login-wrapper">
         <div className="form-wrapper">
+          <div style={{ marginBottom: "100px", marginLeft: "-150px" }}>
+            Login to CoinFlow
+          </div>
           <Form
             name="basic"
             labelCol={{
@@ -53,7 +56,6 @@ export const Login = () => {
             autoComplete="off"
           >
             <Form.Item
-              label="Email"
               name="email"
               rules={[
                 {
@@ -62,11 +64,10 @@ export const Login = () => {
                 },
               ]}
             >
-              <Input />
+              <Input className="input-email" placeholder="Username" />
             </Form.Item>
 
             <Form.Item
-              label="Password"
               name="password"
               rules={[
                 {
@@ -75,7 +76,10 @@ export const Login = () => {
                 },
               ]}
             >
-              <Input.Password />
+              <Input.Password
+                className="input-password"
+                placeholder="Password"
+              />
             </Form.Item>
             <Link className="sign-in-label" to="/register">
               Dont have an account? Sign in!
@@ -91,7 +95,7 @@ export const Login = () => {
 
             <Form.Item
               wrapperCol={{
-                offset: 8,
+                offset: 1,
                 span: 16,
               }}
             >
@@ -101,23 +105,10 @@ export const Login = () => {
                 htmlType="submit"
                 loading={loading}
               >
-                Submit
+                Log In
               </Button>
             </Form.Item>
           </Form>
-        </div>
-        <div className="info-wrapper">
-          <h1>Why CoinFlow</h1>
-          <p>
-            CoinFlow provides the latest and most accurate cryptocurrency market
-            data in real-time. Our user-friendly interface allows both
-            experienced traders and beginners to easily monitor their crypto
-            portfolios. We prioritize your security with advanced encryption and
-            safety measures. Additionally, we offer detailed analytics and
-            charts to help you make informed decisions. Our 24/7 customer
-            support team is always available to assist you.
-          </p>
-          <p></p>
         </div>
       </div>
     </div>

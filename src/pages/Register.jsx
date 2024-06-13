@@ -35,7 +35,6 @@ const Register = () => {
   };
   return (
     <div className="page-container">
-      <img className="login-logo" src={logo} alt="Logo" />
       <div className="login-wrapper">
         <div className="form-wrapper">
           <Form
@@ -56,7 +55,6 @@ const Register = () => {
             autoComplete="off"
           >
             <Form.Item
-              label="Username"
               name="username"
               rules={[
                 {
@@ -65,10 +63,9 @@ const Register = () => {
                 },
               ]}
             >
-              <Input />
+              <Input className="input-email" placeholder="Username" />
             </Form.Item>
             <Form.Item
-              label="Email"
               name="email"
               rules={[
                 {
@@ -77,11 +74,10 @@ const Register = () => {
                 },
               ]}
             >
-              <Input />
+              <Input className="input-email" placeholder="Email" />
             </Form.Item>
 
             <Form.Item
-              label="Password"
               name="password"
               rules={[
                 {
@@ -90,7 +86,10 @@ const Register = () => {
                 },
               ]}
             >
-              <Input.Password />
+              <Input.Password
+                className="input-password"
+                placeholder="Password"
+              />
             </Form.Item>
             <Link className="sign-in-label" to="/login">
               Already have an account? Log in!
@@ -106,7 +105,7 @@ const Register = () => {
 
             <Form.Item
               wrapperCol={{
-                offset: 8,
+                offset: 1,
                 span: 16,
               }}
             >
@@ -116,23 +115,10 @@ const Register = () => {
                 htmlType="submit"
                 loading={loading}
               >
-                Submit
+                Register
               </Button>
             </Form.Item>
           </Form>
-        </div>
-        <div className="info-wrapper">
-          <h1>Why CoinFlow</h1>
-          <p>
-            CoinFlow provides the latest and most accurate cryptocurrency market
-            data in real-time. Our user-friendly interface allows both
-            experienced traders and beginners to easily monitor their crypto
-            portfolios. We prioritize your security with advanced encryption and
-            safety measures. Additionally, we offer detailed analytics and
-            charts to help you make informed decisions. Our 24/7 customer
-            support team is always available to assist you.
-          </p>
-          <p></p>
         </div>
       </div>
     </div>
