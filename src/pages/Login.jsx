@@ -33,7 +33,6 @@ export const Login = () => {
   };
   return (
     <div className="page-container">
-      <img className="login-logo" src={logo} alt="Logo" />
       <div className="login-wrapper">
         <div className="form-wrapper">
           <Form

@@ -71,17 +71,24 @@ const CoinTable = ({ coins, setCoins, loading, pagination, onTableChange }) => {
     try {
       await axios.delete(`http://localhost:5000/coins/${id}`);
       message.success("Coin deleted successfully");
-      setCoins((prevCoins) =>
-        Array.isArray(prevCoins)
-          ? prevCoins.filter((coin) => coin._id !== id)
-          : []
-      );
+
+      const isLastItemOnPage = coins.length === 1 && pagination.current > 1;
+
+      if (isLastItemOnPage) {
+        const newPage = pagination.current - 1 > 0 ? pagination.current - 1 : 1;
+        onTableChange(newPage, debouncedSearchTerm);
+      } else {
+        setCoins((prevCoins) =>
+          Array.isArray(prevCoins)
+            ? prevCoins.filter((coin) => coin._id !== id)
+            : []
+        );
+      }
     } catch (error) {
       console.error("Error deleting coin:", error);
       message.error("Failed to delete coin");
     }
   };
-
   const handleAdd = async () => {
     try {
       const values = await addForm.validateFields();
