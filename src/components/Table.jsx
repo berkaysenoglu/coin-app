@@ -155,7 +155,6 @@ const CoinTable = ({ coins, setCoins, loading, pagination, onTableChange }) => {
 
   return (
     <div>
-      <div style={{ backgroundColor: "red" }}>HEADER</div>
       <div className="table-container">
         <Input.Search
           placeholder="Search by name or tag"

@@ -23,7 +23,8 @@ const Home = () => {
         `http://localhost:5000/coins?page=${page}&limit=${pageSize}&search=${searchTerm}`
       );
 
-      setCoins(response.data.coins);
+      setCoins(response.data);
+      console.log(response);
       setPagination({
         current: page,
         pageSize: pageSize,
