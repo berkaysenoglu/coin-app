@@ -11,7 +11,7 @@ import {
 } from "antd";
 import axios from "axios";
 import { MdEdit, MdDeleteForever } from "react-icons/md";
-import useDebounce from "../hooks/useDebounce"; // Debounce hook'unu içe aktarın
+import useDebounce from "../hooks/useDebounce";
 
 const CoinTable = ({ coins, setCoins, loading, pagination, onTableChange }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -21,11 +21,11 @@ const CoinTable = ({ coins, setCoins, loading, pagination, onTableChange }) => {
   const [form] = Form.useForm();
   const [addForm] = Form.useForm();
 
-  const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500ms debounce delay
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   useEffect(() => {
     onTableChange(pagination, debouncedSearchTerm);
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, pagination.current, pagination.pageSize]);
 
   const showEditModal = (record) => {
     setEditingCoin(record);
@@ -76,7 +76,13 @@ const CoinTable = ({ coins, setCoins, loading, pagination, onTableChange }) => {
 
       if (isLastItemOnPage) {
         const newPage = pagination.current - 1 > 0 ? pagination.current - 1 : 1;
-        onTableChange(newPage, debouncedSearchTerm);
+        onTableChange(
+          {
+            ...pagination,
+            current: newPage,
+          },
+          debouncedSearchTerm
+        );
       } else {
         setCoins((prevCoins) =>
           Array.isArray(prevCoins)
@@ -89,6 +95,7 @@ const CoinTable = ({ coins, setCoins, loading, pagination, onTableChange }) => {
       message.error("Failed to delete coin");
     }
   };
+
   const handleAdd = async () => {
     try {
       const values = await addForm.validateFields();
@@ -185,7 +192,7 @@ const CoinTable = ({ coins, setCoins, loading, pagination, onTableChange }) => {
 
         <Modal
           title="Edit Coin"
-          open={isModalVisible}
+          visible={isModalVisible} // visible prop is used instead of open
           onCancel={handleCancel}
           onOk={handleSave}
         >

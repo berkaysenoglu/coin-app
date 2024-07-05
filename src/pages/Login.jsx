@@ -35,9 +35,6 @@ export const Login = () => {
     <div className="page-container">
       <div className="login-wrapper">
         <div className="form-wrapper">
-          <div style={{ marginBottom: "100px", marginLeft: "-150px" }}>
-            Login to CoinFlow
-          </div>
           <Form
             name="basic"
             labelCol={{

@@ -1,12 +1,10 @@
 import React from "react";
-import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import CoinTable from "../components/Table.jsx";
 import { message } from "antd";
 
 const Home = () => {
-  const { user } = useAuth();
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
@@ -23,8 +21,7 @@ const Home = () => {
         `http://localhost:5000/coins?page=${page}&limit=${pageSize}&search=${searchTerm}`
       );
 
-      setCoins(response.data);
-      console.log(response);
+      setCoins(response.data.coins); // coins dizisine erişim
       setPagination({
         current: page,
         pageSize: pageSize,
@@ -40,10 +37,15 @@ const Home = () => {
 
   useEffect(() => {
     fetchData(pagination.current, pagination.pageSize, searchTerm);
-  }, [searchTerm]);
+  }, [pagination.current, pagination.pageSize, searchTerm]);
 
   const handleTableChange = (pagination, searchTerm) => {
-    fetchData(pagination.current, pagination.pageSize, searchTerm);
+    setPagination({
+      ...pagination,
+      current: pagination.current,
+      pageSize: pagination.pageSize,
+    });
+    setSearchTerm(searchTerm);
   };
 
   return (
